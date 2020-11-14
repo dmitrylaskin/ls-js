@@ -62,14 +62,12 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number=0) {
-    let counter = 0
-    return function() {
-        counter++
-        return number + counter
 
+    return function() {
+        return ++number
     }
 }
-let f = returnCounter(10)
+
 
 
 
