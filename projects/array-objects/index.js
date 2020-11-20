@@ -42,9 +42,13 @@ function map(array, fn) {
    reduce([1, 2, 3], (all, current) => all + current) // 6
  */
 function reduce(array, fn, initial) {
-  let result = initial
+  let result = (initial === undefined) ? undefined : initial
   for (let i=0; i < array.length; i++) {
-    result = fn(result, array[i])
+    if (result !== undefined) {
+      result = fn(result, array[i], i, array)
+    } else {
+      result = array[i]
+    }
   }
   return result
 }
@@ -77,6 +81,12 @@ function upperProps(obj) {
    console.log(obj.foo); // 4
  */
 function createProxy(obj) {
+  return new Proxy(obj, {
+    set(obj, key, value) {
+      obj[key] = value**2
+      return true
+    }
+  })
 }
 
 export { forEach, map, reduce, upperProps, createProxy };
