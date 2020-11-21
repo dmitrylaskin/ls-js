@@ -42,7 +42,7 @@ function map(array, fn) {
    reduce([1, 2, 3], (all, current) => all + current) // 6
  */
 function reduce(array, fn, initial) {
-  let result = (initial === undefined) ? undefined : initial
+  let result = initial
   for (let i=0; i < array.length; i++) {
     if (result !== undefined) {
       result = fn(result, array[i], i, array)
