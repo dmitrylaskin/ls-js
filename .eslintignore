@@ -7,3 +7,5 @@ benchmark
 coverage
 array-objects
 exceptions
+dom
+async
