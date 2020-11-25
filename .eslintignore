@@ -5,7 +5,4 @@ dist
 # Ignore some folders
 benchmark
 coverage
-array-objects
-exceptions
-dom
-async
+projects

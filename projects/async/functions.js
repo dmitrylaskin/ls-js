@@ -31,6 +31,6 @@ function loadAndSortTowns() {
   let url = 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json'
   return fetch(url)
     .then(response => response.json())
-    .then(cities => cities.map(city => city.name).sort())
+    .then(cities => cities.sort((a, b) => a.name > b.name ? 0 : -1))
 }
 export { delayPromise, loadAndSortTowns };

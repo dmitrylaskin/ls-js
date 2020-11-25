@@ -9,5 +9,4 @@ dist/
 node_modules/
 coverage/
 .eslintcache
-testAsync.js
-indexTestAsync.html
+temp/
