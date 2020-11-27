@@ -224,6 +224,19 @@ function collectDOMStat(root) {
    }
  */
 function observeChildNodes(where, fn) {
+  let observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+      if (mutation.type === 'childList') {
+        fn({
+          type:mutation.addedNodes.length ? 'insert' : 'remove',
+          nodes: [
+            ...(mutation.addedNodes.length ? mutation.addedNodes : mutation.removedNodes)
+          ]
+        })
+      }
+    })
+  })
+  observer.observe(where, {childList: true, subtree: true})
 }
 
 export {
