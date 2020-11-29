@@ -105,9 +105,7 @@ function deleteTextNodes(where) {
       node.remove()
     }
   }
-  for (let node of where.children) {
-    node.textContent = ''
-  }
+
 }
 
 /*
@@ -122,17 +120,17 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-  for (let node of where.childNodes) {
+  for (let i = 0; i < where.childNodes.length; i++) {
 
-    if (node.nodeType === 3) {
-      node.remove()
+    if (where.childNodes[i].nodeType === Element.TEXT_NODE) {
+      where.removeChild(where.childNodes[i])
+      i--
+    } else if (where.childNodes[i].nodeType === Element.ELEMENT_NODE) {
+      deleteTextNodesRecursive(where.childNodes[i])
     }
   }
-  for (let node of where.children) {
-    if (node.hasChildNodes()) {
-      deleteTextNodesRecursive(node)
-    }
-  }
+
+
 }
 
 /*
@@ -155,42 +153,37 @@ function deleteTextNodesRecursive(where) {
      texts: 3
    }
  */
-let stat = {
-  tags: {},
-  classes: {},
-  texts: 0
-}
 
 function collectDOMStat(root) {
-
-  for (let node of root.children) {
-    if (node.hasChildNodes()) {
-      collectDOMStat(node)
-    }
-//get classes
-    for (let className of node.classList) {
-      if (className in stat.classes) {
-        stat.classes[className]++
-      } else {
-        stat.classes[className] = 1
+  let stat = {
+    tags: {},
+    classes: {},
+    texts: 0
+  }
+  function fn(root) {
+    for (let node of root.childNodes) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        stat.texts++
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        if (node.tagName in stat.tags) {
+          stat.tags[node.tagName]++
+        } else {
+          stat.tags[node.tagName] = 1
+        }
+        for (let className of node.classList) {
+          if (className in stat.classes) {
+            stat.classes[className]++
+          } else {
+            stat.classes[className] = 1
+          }
+        }
+        fn(node)
       }
     }
-//get tags
-    if (node.tagName in stat.tags) {
-      stat.tags[node.tagName]++
-    } else {
-      stat.tags[node.tagName] = 1
-    }
-//get text node
   }
-  for (let node of root.childNodes) {
-    if (node.nodeType === 3) {
-      stat.texts++
-    }
-  }
+  fn(root)
   return stat
 }
-
 /*
  Задание 8 *:
 
