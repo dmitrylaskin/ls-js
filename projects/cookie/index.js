@@ -45,11 +45,90 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
+let cookiesMap = getCookies()
+let filterValue = ''
+
+updateTable()
+
+function getCookies() {
+  return document.cookie
+    .split('; ')
+    .filter(Boolean)
+    .map((cookie) => cookie.match(/^([^=]+)=(.+)/))
+    .reduce((obj, [, name, value]) =>{
+      obj.set(name, value)
+
+      return obj
+    }, new Map())
+}
+
+
+
 filterNameInput.addEventListener('input', function () {
+  filterValue = this.value
+  updateTable()
+
 });
 
 addButton.addEventListener('click', () => {
+  let name = encodeURIComponent(addNameInput.value.trim())
+  let value = encodeURIComponent(addValueInput.value.trim())
+
+  if (!name) {
+    return
+  }
+  document.cookie = `${name}=${value}`
+  cookiesMap.set(name, value)
+  updateTable()
 });
 
 listTable.addEventListener('click', (e) => {
+  const {role, cookieName} = e.target.dataset;
+
+  if (role === 'remove-cookie') {
+    cookiesMap.delete(cookieName);
+    document.cookie = `${cookieName}=deleted; max-age=0`;
+    updateTable()
+  }
 });
+
+function updateTable() {
+  let fragment = document.createDocumentFragment()
+  let total = 0
+
+  listTable.innerHTML = ''
+
+  for (let [name, value] of cookiesMap) {
+    if (
+      filterValue &&
+      !name.toLowerCase().includes(filterValue.toLowerCase()) &&
+      !value.toLowerCase().includes(filterValue.toLowerCase())
+    ) {
+      continue;
+    }
+    total++;
+
+    let tr = document.createElement('tr')
+    let nameTD = document.createElement('td')
+    let valueTD = document.createElement('td')
+    let removeTD = document.createElement('td')
+    let removeButton = document.createElement('button')
+
+    removeButton.dataset.role = 'remove-cookie'
+    removeButton.dataset.cookieName = 'name'
+    removeButton.textContent = 'Удалить'
+    nameTD.textContent = name
+    valueTD.textContent = value
+    valueTD.classList.add('value')
+    tr.append(nameTD, valueTD, removeTD)
+    removeTD.append(removeButton)
+
+    fragment.append(tr)
+  }
+  if (total) {
+    listTable.parentNode.classList.remove('hidden')
+    listTable.append(fragment)
+  } else {
+    listTable.parentNode.classList.add('hidden')
+  }
+}
