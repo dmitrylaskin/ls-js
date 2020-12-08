@@ -115,7 +115,7 @@ function updateTable() {
     let removeButton = document.createElement('button')
 
     removeButton.dataset.role = 'remove-cookie'
-    removeButton.dataset.cookieName = 'name'
+    removeButton.dataset.cookieName = name
     removeButton.textContent = 'Удалить'
     nameTD.textContent = name
     valueTD.textContent = value
