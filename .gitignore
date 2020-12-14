@@ -9,3 +9,5 @@ dist/
 node_modules/
 coverage/
 .eslintcache
+temp/
+temp3/

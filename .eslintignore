@@ -5,3 +5,4 @@ dist
 # Ignore some folders
 benchmark
 coverage
+projects
