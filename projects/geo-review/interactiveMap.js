@@ -13,7 +13,7 @@ export default class InteractiveMap {
   injectYMapsScript() {
     return new Promise((resolve) => {
       let ymapsScript = document.createElement('script')
-      ymapsScript.src = 'https://api-maps.yandex.ru/2.1/?apikey=ваш API-ключ&lang=ru_RU'
+      ymapsScript.src = 'https://api-maps.yandex.ru/2.1/?apikey=5a4c2cfe-31f1-4007-af4e-11db22b6954b&lang=ru_RU'
       document.body.appendChild(ymapsScript)
       ymapsScript.addEventListener('load', resolve)
     })
@@ -38,7 +38,7 @@ export default class InteractiveMap {
       zoom: 10
     })
     this.map.events.add('click', (e) => this.onClick(e.get('coords')))
-    this.map.getObjects.add(this.clusterer)
+    this.map.geoObjects.add(this.clusterer)
   }
 
   openBalloon(coords, content) {
