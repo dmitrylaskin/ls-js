@@ -57,7 +57,7 @@ export default class GeoReview {
 
 
   async onDocumentClick(e) {
-    if (e.target.dataset.role === 'reviews-add') {
+    if (e.target.dataset.role === 'review-add') {
       let reviewsForm = document.querySelector('[data-role=review-form]')
       let coords = JSON.parse(reviewsForm.dataset.coords)
       let data = {

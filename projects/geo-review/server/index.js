@@ -35,10 +35,10 @@ function createServer() {
 
         if (req.url === '/coords') {
           end(res, storage.getCoords())
-        } else if (req.url === './add') {
+        } else if (req.url === '/add') {
           storage.add(body)
           end(res, {ok:true})
-        } else if (req.url === './list') {
+        } else if (req.url === '/list') {
           end(res, storage.getByCoords(body.coords))
         } else {
           end(res, {})
